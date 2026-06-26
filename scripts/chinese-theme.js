@@ -88,12 +88,50 @@ const codeCopyAssets = `
 })();
 </script>`;
 
+const clickParticleAssets = `
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+<script>
+(function () {
+  var lastBurstAt = 0;
+  var colors = ['#1f8fff', '#f9c74f', '#ef476f', '#06d6a0', '#8338ec'];
+
+  document.addEventListener('click', function (event) {
+    if (typeof window.confetti !== 'function') return;
+
+    var now = Date.now();
+    if (now - lastBurstAt < 80) return;
+    lastBurstAt = now;
+
+    var origin = {
+      x: event.clientX / window.innerWidth,
+      y: event.clientY / window.innerHeight
+    };
+
+    window.confetti({
+      particleCount: 38,
+      spread: 64,
+      startVelocity: 28,
+      ticks: 120,
+      gravity: 0.9,
+      scalar: 0.72,
+      colors: colors,
+      origin: origin,
+      disableForReducedMotion: true
+    });
+  });
+})();
+</script>`;
+
 hexo.extend.filter.register('_after_html_render', html => {
   const localized = html.replace(
     /基于 <a href="https:\/\/hexo\.io\/" target="_blank">Hexo<\/a>/g,
     '呵货科技'
   );
 
-  if (localized.includes('code-copy-button')) return localized;
-  return localized.replace('</body>', `${codeCopyAssets}\n</body>`);
+  const assets = [];
+  if (!localized.includes('code-copy-button')) assets.push(codeCopyAssets);
+  if (!localized.includes('confetti.browser.min.js')) assets.push(clickParticleAssets);
+  if (!assets.length) return localized;
+
+  return localized.replace('</body>', `${assets.join('\n')}\n</body>`);
 });
