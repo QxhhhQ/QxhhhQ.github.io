@@ -1,8 +1,15 @@
 menu:
   首页: /
-  归档: /archives
+  归档: /archives/
 
 excerpt_link: 阅读全文
 
 valine:
   placeholder: 欢迎留言
+
+widgets:
+  - category
+  - tag
+  - tagcloud
+  - archive
+  - recent_posts

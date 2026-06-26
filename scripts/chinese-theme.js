@@ -7,8 +7,9 @@ const applyChineseThemeText = () => {
   // Hexo deep-merges theme menus, so replace the final menu object before rendering.
   theme.menu = {
     '首页': '/',
-    '归档': '/archives'
+    '归档': '/archives/'
   };
+  theme.widgets = ['category', 'tag', 'tagcloud', 'archive', 'recent_posts'];
 
   theme.excerpt_link = '阅读全文';
 
